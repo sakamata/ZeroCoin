@@ -20,3 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/', 'IndexController@index');
+Route::get('/send/{user_id}', 'IndexController@send');

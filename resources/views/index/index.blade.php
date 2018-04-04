@@ -8,7 +8,7 @@
             <div class="mx-auto">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ Request::root() }}/send/{{$user->user_id}}&size=180x180" alt="ZeroCoin QR code send {{$user->user_id}}" />
             </div>
-            <p class="mx-auto text-center mb-0">もらう場合はお相手にZeroCoinでこれを撮影してもらいます</p>
+            <p class="mx-auto text-center mb-0">もらう場合はお相手にZeroCoinでこのQRコードを撮影してもらいます</p>
         </div>
     </div>
 
@@ -27,7 +27,7 @@
 
     <button type="button" class="btn btn-lg btn-warning d-block mx-auto">別の人にあげる</button>
 
-    <h3>残高 : {{number_format($user->now_point)}}Pt</h3>
+    <h2 class="mt-3">残高 : {{number_format($user->now_point)}}Pt</h2>
 
 </div>
 
@@ -67,6 +67,8 @@ function checkQRpath() {
         || qr_url.slice(0,8) == "https://")
         && qr_url.match('{{ Request::root() }}')
     ) {
+        // ToDo 自身のQRコードだった場合のエラー処理
+
         // console.log("http開始の文字列です。");
         // console.log('ZeroCoinのドメインです');
         location.href=qr_url;

@@ -7,6 +7,10 @@ h2 {
     font-size: 1.2rem;
 }
 
+h3 {
+    font-size: 1.1rem;
+}
+
 /* /qr QRリーダー起動画面  ここから */
 
 #qr_form {
@@ -49,5 +53,9 @@ input, label {
     height:1px;
     opacity:0
 }
-
 /* /qr QRリーダー起動画面 ここまで */
+
+/* /send QR送信画面 ここから */
+
+
+/* /send QR送信画面 ここまで */
