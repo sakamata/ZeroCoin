@@ -18,7 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('user_id', 20)->unique();
             $table->string('name', 32);
             $table->string('email', 256)->unique();
-            $table->string('image', 64)->nullable();
+            $table->string('user_img', 32)->nullable();
+            $table->string('qrcode_img', 32)->nullable();
             $table->integer('now_point');
             $table->unsignedTinyInteger('status');
             $table->ipAddress('ip');
