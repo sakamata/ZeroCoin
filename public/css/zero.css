@@ -1,0 +1,53 @@
+/* 共通デザイン */
+h2,h3,h4,h5,h6 {
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.2rem;
+}
+
+/* /qr QRリーダー起動画面  ここから */
+
+#qr_form {
+    margin: auto;
+    margin-top: 15px;
+    text-align: center;
+    height: 60px;
+}
+
+#qr_url {
+    display: block;
+    margin: auto;
+}
+
+input, label {
+    vertical-align:middle
+}
+.qrcode-text {
+    padding-right:1.7em;
+    margin-right:0
+}
+.qrcode-text-btn {
+    display:inline-block;
+    position:relative;
+    top:-40px;
+    /* background:url(//dab1nmslvvntp.cloudfront.net/wp-content/uploads/2017/07/1499401426qr_icon.svg) 50% 50% no-repeat; */
+    background:url('../img/QR_send_button.png') 50% 50%;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    width:232px;
+    height:71px;
+    cursor:pointer
+}
+.qrcode-text-btn > input[type=file] {
+    position:absolute;
+    overflow:hidden;
+    width:1px;
+    height:1px;
+    opacity:0
+}
+
+/* /qr QRリーダー起動画面 ここまで */

@@ -15,9 +15,11 @@ class IndexController extends Controller
     {
         $user = Auth::user();
         if (!$user) { return view('welcome'); }
+        $param = [
+            'user' => $user,
+        ];
 
-
-        return view('index.index');
+        return view('index.index', $param);
     }
 
 }
