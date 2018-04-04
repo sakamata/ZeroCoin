@@ -3,12 +3,12 @@
 @section('content')
 <div class="col-12">
     <div id="qr_receve" class="card mx-auto">
-        <div class="card pb-0">
+        <div class="card p-1 pb-0">
             <h2>もらう</h2>
             <div class="mx-auto">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?data={{ Request::root() }}/send/{{$user->user_id}}&size=180x180" alt="ZeroCoin QR code send {{$user->user_id}}" />
             </div>
-            <p class="mx-auto text-center">ここにZeroCoinのQRリーダーをかざしてもらってください</p>
+            <p class="mx-auto text-center mb-0">もらう場合はお相手にZeroCoinでこれを撮影してもらいます</p>
         </div>
     </div>
 
@@ -22,7 +22,7 @@
     </form>
 
     <div id="send_form" class="mx-auto" style="display:none">
-        <button type="button" class="btn btn-warning mx-auto"  onclick=checkQRpath()>あげる</button>
+        <button type="button" class="btn btn-lg btn-warning d-block mx-auto"  onclick=checkQRpath()>あげる</button>
     </div>
 
     <button type="button" class="btn btn-lg btn-warning d-block mx-auto">別の人にあげる</button>
@@ -38,12 +38,12 @@ function openQRCamera(node) {
     node.value = "";
     qrcode.callback = function(res) {
       if(res instanceof Error) {
-        alert("QRコードが見つかりませんでした。 QRコードがカメラのフレーム内にあることを確認して、もう一度お試しください。");
+        alert("QRコードが見つかりませんでした。 QRコードが画面中央に全て入るよう撮影してください。");
       } else {
         node.parentNode.previousElementSibling.value = res;
 
         var message = document.getElementById("qr_res_message");
-        message.innerHTML = "QRコードを読み取りました『あげる』を押してください";
+        message.innerHTML = "<p>QRコードを読み取りました『あげる』を押してください</p>";
         document.getElementById("qr_form").style.display="none";
         document.getElementById("qr_receve").style.display="none";
         document.getElementById("send_form").style.display="block";
@@ -55,7 +55,7 @@ function openQRCamera(node) {
 }
 
 function showQRIntro() {
-  return confirm("起動するカメラでQRコードを撮影してください。");
+  return confirm("起動するカメラでお相手のQRコードを撮影してください");
 }
 
 function checkQRpath() {
@@ -72,9 +72,10 @@ function checkQRpath() {
         location.href=qr_url;
     } else {
         console.log("httpのQRではない");
+        console.log(qr_url);
         // pathがZeroCoinでない場合はメッセージ表示
         var message = document.getElementById("qr_res_message");
-        message.innerHTML = "ZeroCoinのQRコードではありません";
+        message.innerHTML = "ZeroCoinのQRコードではありません" + qr_url;
         document.getElementById("qr_form").style.display="block";
         document.getElementById("send_form").style.display="none";
         document.getElementById("qr_url").value="";
