@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Providers;
-
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,12 +13,11 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        /*
         View::composer(
-            'history.history', function($view) {
-                $view->with('hoge', 'message!!!');
-            }
+            'history.history', 'App\Http\ViewComposers\DateTimeComposer'
         );
+        */
     }
 
     /**

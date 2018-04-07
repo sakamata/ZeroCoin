@@ -4,28 +4,30 @@
 <div class="col-12">
     <div id="qr_receve" class="card mx-auto">
         <div class="card p-1 pb-0">
-            <div class="mx-auto">{{$items->links()}}</div>
-            <h2>全体履歴</h2>
+            <div class="mx-auto mt-3">{{$items->links()}}</div>
+            <h2 class="p-3">全体履歴</h2>
             <div class="mx-auto">
-                <table class="table">
-                    <tr>
-                        <th>From</th>
-                        <th>To</th>
+                <table class="table table-striped">
+                    <tr class="text-center">
+                        <th>日時</th>
+                        <th>あげた</th>
+                        <th>もらった</th>
                         <th>Point</th>
-                        <th>DateTime</th>
                     </tr>
                     @foreach ($items as $item)
                     <tr>
-                        <td>ID:{{$item->user_id}}<br>{{$item->name}}</td>
-                        <td>ID:{{$item->r_user_id}}<br>{{$item->r_name}}</td>
-                        <td>{{$item->receve_point}}</td>
-                        <td>{{$item->created_at}}</td>
+                        <td class="text-right align-middle">{{ Carbon\Carbon::parse($item->created_at)->format('n/j G:i') }}</td>
+                        <td class="align-middle break-all"><span>{{$item->user_id}}</span><span>{{$item->name}}</span></td>
+                        <td class="align-middle break-all"><span>{{$item->r_user_id}}</span><span>{{$item->r_name}}</span></td>
+                        <td class="text-right align-middle">{{number_format($item->receve_point)}}</td>
                     </tr>
                     @endforeach
                 </table>
-
             </div>
             <div class="mx-auto">{{$items->links()}}</div>
+            <div class="d-flex mx-auto pb-3">
+                <a role="button" href="/" class="btn btn-lg btn-warning d-block mx-auto">HOME</a>
+            </div>
         </div>
     </div>
 </div>

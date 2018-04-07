@@ -59,5 +59,17 @@ input, label {
 .balance_table td {
     font-size: 1.2rem;
 }
-
 /* /send QR送信画面 ここまで */
+
+
+/* /history 履歴画面 ここから */
+
+/* user_id長ければ強制改行する */
+.break-all {
+    word-break : break-all;
+}
+table span {
+    display: inline-block;
+}
+
+/* /history 履歴画面 ここまで */

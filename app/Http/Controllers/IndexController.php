@@ -119,6 +119,7 @@ class IndexController extends Controller
         $sent_book = DB::table('passbooks')
             ->where('id', $status['pass_id'])->first();
         $param = [
+            'user' => $user,
             'now_point' => $status['now_point'],
             'receve_user' => $status['receve_user'],
             'sent_book' => $sent_book,

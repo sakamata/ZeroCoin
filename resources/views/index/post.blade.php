@@ -18,7 +18,7 @@
         <h2 class="mt-3">残高 : {{number_format($now_point)}}Pt</h2>
         <a role="button" href="/" class="btn btn-lg btn-warning d-block mx-auto mt-3">HOME</a>
         <a role="button" href="/" class="btn btn-lg btn-warning d-block mx-auto mt-3 disabled">別の人にあげる</a>
-        <a role="button" href="/" class="btn btn-lg btn-warning d-block mx-auto mt-3 disabled">通帳を見る</a>
+        <a role="button" href="/history/{{$user->user_id}}" class="btn btn-lg btn-warning d-block mx-auto mt-3">通帳を見る</a>
     </div>
 </div>
 
