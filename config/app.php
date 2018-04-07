@@ -160,6 +160,10 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // ZeroCoin Extra providers
+        App\Providers\ComposerServiceProvider::class,
+
+
     ],
 
     /*
