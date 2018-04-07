@@ -29,7 +29,10 @@
             <a id="btn_back" style="display:none" role="button" href="/" class="btn btn-lg btn-warning mx-auto">もどる</a>
         </div>
         <div class="d-flex mt-3">
-            <a role="button" href="/" class="btn btn-lg btn-warning mx-auto disabled">別の人にあげる</a>
+            <a role="button" href="/" class="btn btn-lg btn-warning d-block mx-auto disabled">別の人にあげる</a>
+        </div>
+        <div class="d-flex mt-3">
+            <a role="button" href="/history/{{$user->user_id}}" class="btn btn-lg btn-warning d-block mx-auto">通帳を見る</a>
         </div>
     </div>
 </div>

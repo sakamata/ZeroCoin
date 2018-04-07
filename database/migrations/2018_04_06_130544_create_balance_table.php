@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnPassbooks extends Migration
+class CreateBalanceTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddColumnPassbooks extends Migration
      */
     public function up()
     {
-        Schema::table('passbooks', function (Blueprint $table) {
-          $table->integer('balance')->after('receve_point');
+        Schema::create('balance', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('passbook_id');
+            $table->integer('user_id');
+            $table->integer('balance');
+            $table->timestampsTz();
         });
     }
 
@@ -25,8 +29,6 @@ class AddColumnPassbooks extends Migration
      */
     public function down()
     {
-        Schema::table('passbooks', function (Blueprint $table) {
-          $table->dropColumn('balance');
-        });
+        Schema::dropIfExists('balance');
     }
 }

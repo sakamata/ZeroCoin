@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class IndexController extends Controller
 {
@@ -63,31 +64,54 @@ class IndexController extends Controller
             return view('welcome');
         }
 
-        // 送信 DB更新 通帳table params
-        $dateTime = date("Y-m-d H:i:s");
+        // DB更新 通帳table 用params
         $passbooks = [
             'send_user_id' => $user->id,
             'receve_user_id' => $request->receve_user_id,
             'send_point' => $request->send_point * -1,
             'receve_point' => $request->send_point,
-            'created_at' => $dateTime,
-            'updated_at' => $dateTime,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
 
-        // 各tableのrecord更新
-        $status = DB::transaction(function () use ($passbooks, $user, $request) {
+        // 各tableのrecord更新のためトランザクション
+        $status = DB::transaction(function () use ($passbooks, $user, $request)
+        {
+            // DB更新 通帳table
             $pass_id = DB::table('passbooks')->insertGetId($passbooks);
-            // 送信 DB更新 user table
-            Db::table('users')->where('id', $user->id)
+            // 送信 DB更新 user table now_point
+            DB::table('users')->where('id', $user->id)
                 ->decrement('now_point', $request->send_point);
-            Db::table('users')->where('id', $request->receve_user_id)
+            DB::table('users')->where('id', $request->receve_user_id)
                 ->increment('now_point', $request->send_point);
-            $send_user = DB::table('users')
-                ->where('id', $request->receve_user_id)->first();
+
+            // balance(残高) tableへ２ユーザーの現在の残高をinsertする
+            $send = DB::table('users')->where('id', $user->id)->first();
+            $receve = DB::table('users')->where('id', $request->receve_user_id)->first();
+
+            $blance_send = [
+                'passbook_id' => $pass_id,
+                'user_id' => $user->id,
+                'balance' => $send->now_point,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            DB::table('balance')->insert($blance_send);
+
+            $blance_receve = [
+                'passbook_id' => $pass_id,
+                'user_id' => $request->receve_user_id,
+                'balance' => $receve->now_point,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ];
+            DB::table('balance')->insert($blance_receve);
+
             // 表示に必要な要素を取得 $status として返り値に
             return array(
                 'pass_id' => $pass_id,
-                'send_user' => $send_user,
+                'receve_user' => $receve,
+                'now_point' => $send->now_point,
             );
         }, 5); // transaction実行回数
 
@@ -95,8 +119,8 @@ class IndexController extends Controller
         $sent_book = DB::table('passbooks')
             ->where('id', $status['pass_id'])->first();
         $param = [
-            'user' => $user,
-            'send_user' => $status['send_user'],
+            'now_point' => $status['now_point'],
+            'receve_user' => $status['receve_user'],
             'sent_book' => $sent_book,
         ];
         return view('index.post', $param);
