@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
+use Carbon\Carbon;
+use DB;
+
 class RegisterController extends Controller
 {
     /*
@@ -28,7 +31,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -49,9 +52,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'user_id' => 'required|string|min:6|max:20|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'password' => 'required|string|min:6|max:32|confirmed',
         ]);
     }
 
@@ -63,10 +66,34 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        $setting = DB::table('governors_settings')->
+            where('id', 1)->first();
+
+        $user = User::create([
+            'name' => $data['user_id'],
+            'user_id' => $data['user_id'],
             'email' => $data['email'],
+            'user_img' => 'default/dummy.png',
+            'now_point' => $setting->basic_income,
+            'status' => 1,
+            'ip' =>  $_SERVER["REMOTE_ADDR"],
+            'host' =>  gethostname(),
+            'user_agent' =>  $_SERVER['HTTP_USER_AGENT'],
             'password' => Hash::make($data['password']),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
+
+        $passbooks = [
+            'send_user_id' => 0,
+            'receve_user_id' => $user->id,
+            'send_point' => $setting->basic_income * -1,
+            'receve_point' => $setting->basic_income,
+            'balance' => $setting->basic_income,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
+        DB::table('passbooks')->insert($passbooks);
+        return $user;
     }
 }
